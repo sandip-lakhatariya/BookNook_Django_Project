@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title> {% block title %} {% endblock title %}</title>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% comment %} <link rel="apple-touch-icon" href="assets/img/apple-icon.png"> {% endcomment %}
+    {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}"> {% endcomment %}
+
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css'%}">
+    <link rel="stylesheet" href="{% static 'assets/css/reg.css'%}">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
+
+    <!-- Slick -->
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/slick.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/slick-theme.css' %}">
+
+    <style>{% block css %}{% endblock css %}</style>    
+  </head>
+  <body>
+
+     <!-- Header -->
+     <nav class="navbar navbar-expand-lg navbar-light shadow">
+        <div class="container d-flex justify-content-between align-items-center">
+
+            <a class="navbar-brand logo h1 align-self-center" style="color:#133B5C" href="index.html">
+                BookNook
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/BookNook/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/BookNook/About/">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/BookNook/shop/">Shop</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#contactus">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar align-self-center d-flex">
+                    <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
+                            <div class="input-group-text">
+                                <i class="fa fa-fw fa-search"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                    </a>
+                    <a class="nav-icon position-relative text-decoration-none" href="/BookNook/Shoppingcart/">
+                        <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"><span id="cart">0</span></span>
+                    </a>
+                    <div class="nav-item dropdown">
+                        <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">    
+                            <i class="fa fa-fw fa-user text-dark"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end me-3" aria-labelledby="bd-theme">
+                            {% if user.is_authenticated %}
+                                <li>
+                                    <h5 class="dropdown-item">Welcome, {{request.user.first_name}}</h5>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/BookNook/Logout/">Logout</a>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+    <!-- Close Header -->
+
+        <!-- Start Regestration Modal -->
+        <div class="reg">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Sign Up Container -->
+                            <div class="container" id="container">
+                                <div class="form-container sign-up-container">
+                                    <form action="/BookNook/Signup/" method="post">
+                                        {% csrf_token %}
+                                        <h1>Create Account</h1>
+                                        <input type="text" placeholder="User Name" for="username" name="username" required/>
+                                        <input type="text" placeholder="First Name" for="fname" name="fname" required/>
+                                        <input type="text" placeholder="Last Name" for="lname" name="lname" required/>
+                                        <input type="password" placeholder="Password" for="password1" name="password1" required/>
+                                        <input type="password" placeholder="Confirm Password" for="password2" name="password2" required/>
+                                        <input type="email" placeholder="Email" for="email" name="email" required/>
+                                        <button type="submit">Sign Up</button>
+                                    </form>
+                                </div>
+
+                                <!-- Sign Ip Container -->
+                                <div class="form-container sign-in-container">
+                                    <form action="/BookNook/Signin/" method="post">
+                                        {% csrf_token %}
+                                        <h1>Sign in</h1>
+                                        <input type="text" placeholder="User Name" for="loginusername" name="loginusername" required/>
+                                        <input type="password" placeholder="Password" for="loginpassword" name="loginpassword" required/>
+                                        <a href="#">Forgot your password?</a>
+                                        <button type="submit">Sign In</button>
+                                    </form>
+                                </div>
+
+                                <div class="overlay-container">
+                                    <div class="overlay">
+                                        <div class="overlay-panel overlay-left">
+                                            <h1>Welcome Back!</h1>
+                                            <p>To keep connected with us please login with your personal info</p>
+                                            <button class="ghost" id="signIn">Sign In</button>
+                                        </div>
+                                        <div class="overlay-panel overlay-right">
+                                            <h1>Hello, Friend!</h1>
+                                            <p>Enter your personal details and start journey with us</p>
+                                            <button class="ghost" id="signUp">Sign Up</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Regestration Modal -->
+
+    <!-- Start Contact Modal -->
+    <div class="modal fade" id="contactus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container contact">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="contact-info">
+                                <img src="https://image.ibb.co/kUASdV/contact-image.png" alt="image"/>
+                                <h4>Contact Us</h4>
+                                <h5>We would love to hear from you !</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="contact-form">
+                                <form action="/BookNook/Contact/" method="Post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-3 my-2" for="contact_fname">First Name:</label>
+                                        <div class="col-sm-12">          
+                                            <input type="text" class="form-control" id="contact_fname" placeholder="Enter First Name" name="contact_fname">
+                                        </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label class="control-label col-sm-3 my-2" for="contact_lname">Last Name:</label>
+                                        <div class="col-sm-12">          
+                                            <input type="text" class="form-control" id="contact_lname" placeholder="Enter Last Name" name="contact_lname">
+                                        </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label class="control-label col-sm-2 my-2" for="contact_email">Email:</label>
+                                        <div class="col-sm-12">
+                                            <input type="email" class="form-control" id="contact_email" placeholder="Enter Email" name="contact_email">
+                                        </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label class="control-label col-sm-2 my-2" for="contact_msg">Message:</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" rows="3" id="contact_msg" name="contact_msg"></textarea>
+                                        </div>
+                                        </div>
+                                        <div class="form-group">        
+                                        <div class="col-sm-offset-2 col-sm-10 my-2">
+                                            <button type="submit" class="btn btn-default">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- End Contact Modal -->
+
+    <!-- Start Search Modal -->
+    <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="w-100 pt-1 mb-5 text-right">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="get" class="modal-content modal-body border-0 p-0">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- End Search Modal -->
+
+    <!-- Start Alert -->
+    {% for message in messages  %}            
+      <div class="alert {{ message.tags }} alert-dismissible fade show my-0" role="alert">
+            <strong>Message : </strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    {% endfor %}  
+    <!-- End Alert -->
+
+    {% block body %}{% endblock body %}
+
+        <!-- Start Footer -->
+        <footer style="background-color:#022C43" id="tempaltemo_footer">
+            <div class="container">
+                <div class="row">
+    
+                    <div class="col-md-4 pt-5">
+                        <h2 class="h2 border-bottom pb-3 border-light logo" style="color:#F5F5F5">BookNook</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li>
+                                <i class="fas fa-map-marker-alt fa-fw"></i>
+                                Rajkot - 360003, Gujarat. 
+                            </li>
+                            <li>
+                                <i class="fa fa-phone fa-fw"></i>
+                                <a class="text-decoration-none" href="tel:010-020-0340">+91 9723748241</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-envelope fa-fw"></i>
+                                <a class="text-decoration-none" href="mailto:info@company.com">www.BookNook.in</a>
+                            </li>
+                        </ul>
+                    </div>
+    
+                    <div class="col-md-4 pt-5">
+                        <h2 class="h2 text-light border-bottom pb-3 border-light">Products</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li><a class="text-decoration-none" href={% url 'shopview' 'Novel' %}>Novel</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'BA' %}">Business & Analysis</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'Self-Help' %}">Self-Help</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'Biography' %}">Biography</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'SC' %}">School/College</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'English' %}">English | </a>
+                                <a class="text-decoration-none" href="{% url 'shopview' 'Hindi' %}">Hindi | </a>
+                                <a class="text-decoration-none" href="{% url 'shopview' 'Gujarati' %}">Gujarati</a>
+                            </li>
+                        </ul>
+                    </div>
+    
+                    <div class="col-md-4 pt-5">
+                        <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
+                        <ul class="list-unstyled text-light footer-link-list">
+                            <li><a class="text-decoration-none" href="/BookNook/">Home</a></li>
+                            <li><a class="text-decoration-none" href="/BookNook/About/">About Us</a></li>
+                            <li><a class="text-decoration-none" href="#">FAQs</a></li>
+                            <li><a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#contactus">Contact</a></li>
+                        </ul>
+                    </div>
+    
+                </div>
+    
+                <div class="row text-light mb-4">
+                    <div class="col-12 mb-3">
+                        <div class="w-100 my-3 border-top border-light"></div>
+                    </div>
+                    <div class="col-auto me-auto">
+                        <ul class="list-inline text-left footer-icons">
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="http://facebook.com/"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram fa-lg fa-fw"></i></a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="https://twitter.com/"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+                            </li>
+                            <li class="list-inline-item border border-light rounded-circle text-center">
+                                <a class="text-light text-decoration-none" target="_blank" href="https://www.linkedin.com/"><i class="fab fa-linkedin fa-lg fa-fw"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+    
+            <div class="w-100 py-3" style="background-color:#022C39">
+                <div class="container">
+                    <div class="row pt-2">
+                        <div class="col-12">
+                            <p class="text-left text-light">
+                                Copyright &copy; 2023 BookNook 
+                                | Designed by Sandip
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+        </footer>
+        <!-- End Footer -->
+
+    <!-- Start Script -->
+    <script src="{% static 'assets/js/jquery-1.11.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/templatemo.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
+    <!-- End Script -->
+
+
+    {% block script %}{% endblock script %}
+
+    <script>
+        console.log('working');
+        if(localStorage.getItem('cart') == null){
+            var cart = {};
+        }
+        else{
+            cart = JSON.parse(localStorage.getItem('cart'));
+            updateCart(cart);
+        }
+
+        $('.cart').click(function(){
+            console.log('clicked');
+            var idstr = this.id.toString();
+            console.log(idstr);
+
+            if(cart[idstr] != undefined) {
+                qty = cart[idstr][0] + 1;
+                img = document.getElementById('img' + idstr).innerHTML;
+                price = document.getElementById('price' + idstr).innerHTML;
+                author = document.getElementById('author' + idstr).innerHTML;
+                name = document.getElementById('name'+idstr).innerHTML;
+                console.log(name);
+                cart[idstr] = [qty, name, img, author, price];
+            }
+            else{
+                qty = 1;
+                img = document.getElementById('img' + idstr).innerHTML;
+                price = document.getElementById('price' + idstr).innerHTML;
+                author = document.getElementById('author' + idstr).innerHTML;
+                name = document.getElementById('name'+idstr).innerHTML;
+                cart[idstr] = [qty, name, img, author, price];
+            }
+            updateCart(cart);
+            console.log(cart);
+        });
+
+        $('.cart_update').click(function(){
+            console.log('clicked');
+            var idstr = this.id.toString();
+            console.log(idstr);
+            if(cart[idstr] != undefined) {
+                cart[idstr] = cart[idstr];
+            }
+            else{
+                qty = 1;
+                img = document.getElementById('img' + idstr).innerHTML;
+                price = document.getElementById('price' + idstr).innerHTML;
+                author = document.getElementById('author' + idstr).innerHTML;
+                name = document.getElementById('name'+idstr).innerHTML;
+                cart[idstr] = [qty, name, img, author, price];
+            }
+            updateCart(cart);
+
+        });
+        
+        str_msg1 = "Thank You For Shopping. Keep Shopping!";
+        str_msg2 = "a";
+        {% for message in messages  %}            
+            console.log(message)
+            {% if message is str_msg1 %}
+                localStorage.clear();
+            {% endif %}
+        {% endfor %}
+        console.log(str_msg2);
+        
+    </script>
+    <script>
+
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const container = document.getElementById('container');
+        
+        signUpButton.addEventListener('click', () => {
+            container.classList.add("right-panel-active");
+        });
+        
+        signInButton.addEventListener('click', () => {
+            container.classList.remove("right-panel-active");
+        });
+        
+    </script>
+  </body>
+</html>

@@ -1,0 +1,193 @@
+{% extends 'basic.html' %}
+
+{% block title %}BookNook{% endblock title %}
+
+{% block body %}
+
+{% load static %}
+
+    <!-- Start Banner Hero -->
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{% static './assets/img/book.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h2>Read more, worry less</h2>
+                                <h1>SALES UPTO 75% OFF</h1>
+                                <p>Bussiness | Health | Novels | Science</p>
+                                <button type="button" class="btn btn-outline-secondary btn-lg"><i class="uil uil-plus-circle"> Explore now</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{% static './assets/img/book.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h2>Read more, worry less</h2>
+                                <h1>SALES UPTO 75% OFF</h1>
+                                <p>Bussiness | Health | Novels | Science</p>
+                                <button type="button" class="btn btn-outline-secondary btn-lg"><i class="uil uil-plus-circle"> Explore now</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="{% static './assets/img/book.jpg' %}" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h2>Read more, worry less</h2>
+                                <h1>SALES UPTO 75% OFF</h1>
+                                <p>Bussiness | Health | Novels | Science</p>
+                                <button type="button" class="btn btn-outline-secondary btn-lg"><i class="uil uil-plus-circle"> Explore now</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+    <!-- End Banner Hero -->
+
+    <!-- Start Display Books -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-left p-2 pb-3">
+                <h4>Books For You</h4>
+            </div>
+
+            <!--Start Carousel Wrapper-->
+            <div id="carousel-related-product">
+
+                {% for i in product|slice:"0:" %}
+                <div class="p-2 pb-3">
+                    <div class="product-wap card rounded-0">
+                        <div class="card rounded-0">
+                            <img class="card-img rounded-0" height="360px" src="/media/{{i.front_image}}">
+                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                <ul class="list-unstyled">
+                                    {% comment %} <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li> {% endcomment %}
+                                    <li><a class="btn btn-success text-white mt-2" href="/BookNook/productview/{{i.id}}"><i class="far fa-eye"></i></a></li>
+                                    <li><a class="btn btn-success text-white mt-2"><i id="pr{{i.id}}" class="fas fa-cart-plus cart"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p id="namepr{{i.id}}" style="Display:none">{{i.book_name}}</p>
+                            <p id="imgpr{{i.id}}" style="Display:none">{{i.front_image}}</p>
+                            <p id="authorpr{{i.id}}" style="Display:none">{{i.author_name}}</p>
+                            <p id="pricepr{{i.id}}" style="Display:none">{{i.price}}</p>
+                            <a href="shop-single.html" class="h3 text-decoration-none fw-bolder">
+                                {% if i.book_name|length > 23 %}
+                                    {{i.book_name|slice:"0:24"}}... 
+                                {% else %}
+                                    {{i.book_name.count}}
+                                    {{i.book_name}}
+                                {% endif %}
+                            </a>
+                            <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                <li><span class="fw-bolder">By</span> {{i.author_name}}</li>
+                                <li class="pt-2">
+                                    <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                    <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                    <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                    <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                    <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                </li>
+                            </ul>
+                            <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-muted fa fa-star"></i>
+                                </li>
+                            </ul>
+                            <p class="text-center mb-0 fw-bolder">₹{{i.price}}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!--End Carousel Wrapper-->
+        </div>
+    </section>
+    <!-- End Display Books -->
+
+{% block script %}
+    <!-- Start Slider Script -->
+    <script src="{% static 'assets/js/slick.min.js' %}"></script>
+    <script>
+        $('#carousel-related-product').slick({
+            infinite: true,
+            arrows: false,
+            slidesToShow: 4,
+            slidesToScroll: 3,
+            dots: true,
+            responsive: [{
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    }
+                }
+            ]
+        });
+    </script>
+    <!-- End Slider Script -->
+
+    <script>
+        function updateCart(cart){
+            var sum = 0;
+            for(var item in cart){
+                sum = sum + cart[item][0];
+            }
+            document.getElementById('cart').innerHTML = sum;
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    </script>
+{% endblock script %}
+
+{% endblock body %}
+   

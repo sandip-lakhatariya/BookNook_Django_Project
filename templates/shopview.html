@@ -1,0 +1,162 @@
+{% extends 'basic.html' %}
+
+{% block title %}Shop View{% endblock title %}
+
+{% block body %}
+
+    <!-- Start Content -->
+    <div class="container py-5">
+        <div class="row">
+
+            <div class="col-lg-3">
+                <h1 class="h2 pb-4">Categories</h1>
+                <ul class="list-unstyled templatemo-accordion">
+                    <li class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{% url 'shopview' 'Gujarati' %}">
+                            Gujarati Books
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul class="collapse show list-unstyled pl-3">
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'G_Novel' %}">Novel</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'G_Biography' %}">Biography</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'G_BA' %}">Bussiness & Analysis</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'G_SF' %}">Self Helf</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'G_SC' %}">School/College</a></li>
+                        </ul>
+                    </li>
+                    <li class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{% url 'shopview' 'Hindi' %}">
+                            Hindi Books
+                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul id="collapseTwo" class="collapse list-unstyled pl-3">
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'H_Novel' %}">Novel</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'H_Biography' %}">Biography</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'H_BA' %}">Bussiness & Analysis</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'H_SF' %}">Self Helf</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'H_SC' %}">School/College</a></li>
+                        </ul>
+                    </li>
+                    <li class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="{% url 'shopview' 'English' %}">
+                            English Books
+                            <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul id="collapseThree" class="collapse list-unstyled pl-3">
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'E_Novel' %}">Novel</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'E_Biography' %}">Biography</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'E_BA' %}">Bussiness & Analysis</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'E_SF' %}">Self Helf</a></li>
+                            <li><a class="text-decoration-none" href="{% url 'shopview' 'E_SC' %}">School/College</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-inline shop-top-menu pb-3 pt-1">
+                            <li class="list-inline-item">
+                                <a class="h3 text-dark text-decoration-none mr-3" href="#">{{book_type}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 pb-4">
+                        <div class="d-flex">
+                            <select class="form-control">
+                                <option>Featured</option>
+                                <option>A to Z</option>
+                                <option>Item</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    {% for i in product %}
+                        <div class="col-md-4">
+                            <div class="card mb-4 product-wap rounded-0">
+                                <div class="card rounded-0">
+                                    <img class="card-img rounded-0" height="360px" src="/media/{{i.front_image}}">
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                                            {% comment %} <li><a class="btn btn-success text-white" href="shop-single.html"><i class="far fa-heart"></i></a></li> {% endcomment %}
+                                            <li><a class="btn btn-success text-white mt-2" href="/BookNook/productview/{{i.id}}"><i class="far fa-eye"></i></a></li>
+                                            <li><a class="btn btn-success text-white mt-2"><i id="pr{{i.id}}" class="fas fa-cart-plus cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    
+                                    <p id="imgpr{{i.id}}" style="Display:none">{{i.front_image}}</p>
+                                    <p id="authorpr{{i.id}}" style="Display:none">{{i.author_name}}</p>
+                                    <p id="pricepr{{i.id}}" style="Display:none">{{i.price}}</p>
+                                    <p id="namepr{{i.id}}" style="Display:none">{{i.book_name}}</p>
+                                    <a href="shop-single.html" class="h3 text-decoration-none fw-bolder">
+                                        {% if i.book_name|length > 23 %}
+                                            {{i.book_name|slice:"0:24"}}... 
+                                        {% else %}
+                                            {{i.book_name.count}}
+                                            {{i.book_name}}
+                                        {% endif %}
+                                    </a>
+                                    <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
+                                        <li><span class="fw-bolder">By</span> {{i.author_name}}</li>
+                                        <li class="pt-2">
+                                            <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-blue float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-black float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-light float-left rounded-circle ml-1"></span>
+                                            <span class="product-color-dot color-dot-green float-left rounded-circle ml-1"></span>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-unstyled d-flex justify-content-center mb-1">
+                                        <li>
+                                            <i class="text-warning fa fa-star"></i>
+                                            <i class="text-warning fa fa-star"></i>
+                                            <i class="text-warning fa fa-star"></i>
+                                            <i class="text-muted fa fa-star"></i>
+                                            <i class="text-muted fa fa-star"></i>
+                                        </li>
+                                    </ul>
+                                    <p class="text-center mb-0 fw-bolder">₹{{i.price}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% comment %} <div div="row">
+                    <ul class="pagination pagination-lg justify-content-end">
+                        <li class="page-item disabled">
+                            <a class="page-link active rounded-0 mr-3 shadow-sm border-top-0 border-left-0" href="#" tabindex="-1">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link rounded-0 mr-3 shadow-sm border-top-0 border-left-0 text-dark" href="#">2</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link rounded-0 shadow-sm border-top-0 border-left-0 text-dark" href="#">3</a>
+                        </li>
+                    </ul>
+                </div> {% endcomment %}
+            </div>
+
+        </div>
+    </div>
+    <!-- End Content -->
+
+    {% block script %}
+        <script>
+            function updateCart(cart){
+                var sum = 0;
+                for(var item in cart){
+                    sum = sum + cart[item][0];
+                }
+                document.getElementById('cart').innerHTML = sum;
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+        </script>
+    {% endblock script %}
+
+{% endblock body %}

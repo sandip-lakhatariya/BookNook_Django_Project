@@ -1,0 +1,206 @@
+{% extends 'basic.html' %}
+
+{% block title %}Shopping Cart{% endblock title %}
+
+{% block css %}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+	font-size: 1rem;
+	line-height: 2.15;
+	padding-left: .75em;
+	padding-right: .75em;
+}
+	
+.card-registration .select-arrow {
+	top: 13px;
+}
+	
+@media (min-width: 992px) {
+	.card-registration-2 .bg-grey {
+	border-top-right-radius: 16px;
+	border-bottom-right-radius: 16px;
+	}
+}
+	
+@media (max-width: 991px) {
+	.card-registration-2 .bg-grey {
+	border-bottom-left-radius: 16px;
+	border-bottom-right-radius: 16px;
+	}
+}
+
+{% endblock css %}
+
+{% block body %}
+
+{% load static %}
+
+<section class="h-100 h-custom" style="background-color: #E9EEF5;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+            <div class="card-body p-0">
+              <div class="row g-0">
+                <div class="col-lg-8">
+                  <div class="p-5">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                      <h1 class="fw-bold mb-0" style="color: #133B5C">Shopping Cart</h1>
+                      <h6 class="mb-0 text-muted" id="total_item"><!--No of Item--></h6>
+                    </div>
+                    <hr class="my-4">
+                
+                    <!-- Iterate through JS for cart -->
+                    <div class="my-item" id="items">
+                    
+                    </div>
+  
+                    <div class="pt-5">
+                      <h6 class="mb-0"><a href="#!" class="text-body"><i
+                            class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4" style="background-color:#F5F5F5">
+                  <div class="p-5">
+                    <h3 class="fw-bold mb-5 mt-2 pt-1" style="color: #133B5C">Summary</h3>
+                    <hr class="my-4">
+  
+                    <div class="d-flex justify-content-between mb-4">
+                      <h5 class="text-uppercase">Sub Total</h5>
+                      <h5 id="sub_total"><!--Total Cost--></h5>
+                    </div>
+  
+                    <h5 class="text-uppercase mb-3">Give code</h5>
+  
+                    <div class="mb-3">
+                      <div class="form-outline">
+                        <input type="text" id="Coupan" class="form-control form-control-lg" placeholder="Enter Coupan Code" />
+                      </div>
+                    </div>
+
+                    <button type="button" class="btn btn-outline-secondary btn-lg mb-5"
+                      data-mdb-ripple-color="dark" onClick="check_coupan()">Apply</button>
+
+                    <div class="d-flex justify-content-between mb-4">
+                        <h5 class="text-uppercase">Discount</h5>
+                        <h5 id="discount"><!--discount--></h5>
+                      </div>
+  
+                    <hr class="my-4">
+  
+                    <div class="d-flex justify-content-between mb-5">
+                      <h5 class="text-uppercase">Total price</h5>
+                      <h5 id="total_price"><!--Total Price--></h5>
+                    </div>
+                    
+                    <a href="/BookNook/Shipping/">
+                    <button type="button" class="btn btn-block btn-lg" style="background-color: #133B5C; color:#EEE">Go To Checkout</button>
+                    </a>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% block script %}
+  <script>
+      function updateCart(cart){
+          var sum = 0;
+          for(var item in cart){
+              sum = sum + cart[item][0];
+          }
+          document.getElementById('cart').innerHTML = sum;
+          localStorage.setItem('cart', JSON.stringify(cart));
+      }
+
+      if(localStorage.getItem('cart') == null){
+        var cart = {};
+      }
+      else{
+        cart = JSON.parse(localStorage.getItem('cart'));
+        updateCart(cart);
+      }
+
+    console.log(cart);
+    var it = 0;
+    var count1 = 0;
+    var sub_t = 0;
+    var discount_price;
+    for(item in cart) {
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        let img = cart[item][2];
+        let author = cart[item][3];
+        let price = qty*cart[item][4];
+
+        if(qty != 0){
+        myStr = `<div class="row mb-4 d-flex justify-content-between align-items-center">
+            <div class="col-md-2 col-lg-2 col-xl-2">
+              <img src="/media/${img}" class="img-fluid rounded-3" alt="Cotton T-shirt">
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-4">
+              <h6 class="text-black mb-0">${name}</h6>
+              <h6 class="text-muted">${author}</h6>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-1 d-flex">
+              <h5>${qty}</h5>
+            </div>
+            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+              <h6 class="mb-0">₹ ${price}</h6>
+            </div>
+            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+              <a href="/BookNook/Shoppingcart/" class="text-muted delete_item" onClick="delItem(${count1})"><i class="fas fa-times"></i></a>
+            </div>
+          </div>
+
+          <hr class="my-4">`
+
+          $('#items').append(myStr);
+          it++;
+        }
+        count1++;
+        sub_t += price;
+    }
+
+    if(it == 0){
+      localStorage.clear();
+    }
+
+    {% comment %} var ab = Object.keys(cart);
+    console.log(ab[0]); {% endcomment %}
+
+    function delItem(x){
+        const a = Object.keys(cart);
+        console.log(a[x]);
+        const y = a[x];
+        cart[y][0] = 0;
+        updateCart(cart);
+    }
+
+    document.getElementById('total_item').innerHTML = it + " Item";
+    document.getElementById('sub_total').innerHTML = "₹ " + sub_t;
+    
+
+    discount_price = Math.floor(sub_t/10);
+    document.getElementById('discount').innerHTML = "- ₹ 00";
+    document.getElementById('total_price').innerHTML = "₹ " + sub_t;
+
+    function check_coupan(){
+      var cpn = document.getElementById('Coupan').value;
+      if(cpn == "BookNook123"){
+        document.getElementById('discount').innerHTML = "- ₹ " + discount_price;
+        document.getElementById('total_price').innerHTML = "₹ " + (sub_t - discount_price);
+      }
+    } 
+
+  </script>
+  {% endblock script %}
+
+
+{% endblock body %}

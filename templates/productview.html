@@ -1,0 +1,163 @@
+{% extends 'basic.html' %}
+
+{% block title %}Product View{% endblock title %}
+
+{% block body %}
+
+{% load static %}
+
+     <!-- Open Content -->
+     <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-2 mt-5">
+                        <!--Start Carousel Wrapper-->
+                        <div id="multi-item-example" class="col-10 carousel slide carousel-multi-item" data-bs-ride="carousel">
+                            <div class="carousel-inner product-links-wap" role="listbox">
+                                <div class="carousel-item active">
+                                    <div class="col-12 pb-4">
+                                        <a href="#">
+                                            <img class="card-img img-fluid" src="/media/{{product.front_image}}" alt="Product Image 1">
+                                        </a>
+                                    </div>
+                                    <div class="col-12">
+                                        <a href="#">
+                                        <img class="card-img img-fluid" src="/media/{{product.back_image}}" height="100px" alt="Product Image 2">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <!--End Carousel Wrapper--> 
+                </div>
+            </div>
+                <div class="col-lg-4 mt-5">
+                    <div class="card mb-3">
+                        <img class="card-img img-fluid" src="/media/{{product.front_image}}" height="300px" alt="Card image cap" id="product-detail">
+                    </div> 
+                </div>
+                <!-- col end -->
+                <div class="col-lg-6 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <p id="namepr{{product.id}}" style="Display:none">{{product.book_name}}</p>
+                            <p id="imgpr{{product.id}}" style="Display:none">{{product.front_image}}</p>
+                            <p id="authorpr{{product.id}}" style="Display:none">{{product.author_name}}</p>
+                            <p id="pricepr{{product.id}}" style="Display:none">{{product.price}}</p>
+                            <h1 class="h2 fw-bold" id="namepr{{product.id}}">{{product.book_name}}</h1>
+                            <p class="h3 py-2 fw-bolder">By <span class="text-muted">{{product.author_name}}<span></p>
+                            <p class="h3 py-0.5">₹{{product.price}}</p>
+                            <p class="py-2">
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-warning"></i>
+                                <i class="fa fa-star text-secondary"></i>
+                                <span class="list-inline-item text-dark fw-bolder text-muted">36 REVIEWS</span>
+                            </p>
+
+                            
+                            {% comment %} <form action="" method="GET"> {% endcomment %}
+                                <input type="hidden" name="product-title" value="Activewear">
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item text-right">
+                                                Quantity
+                                                <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+                                            </li>
+                                            <li class="list-inline-item"><span class="btn minus1" id="minus" style="background-color: #133B5C; color:#EEE">-</span></li>
+                                            <li class="list-inline-item"><span class="badge" id="var-value" style="background-color: #F5F5F5; color:#111">1</span></li>
+                                            <li class="list-inline-item"><span class="btn plus1" id="plus" style="background-color: #133B5C; color:#EEE">+</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col d-grid pb-3">
+                                        <button type="submit" id="pr{{product.id}}" class="btn btn-sm cart_update" name="submit" value="addtocard" style="background-color: #133B5C; color:#EEE">ADD TO CART</button>
+                                    </div>
+                                </div>
+                                    
+                            {% comment %} </form> {% endcomment %}
+
+                            <ul class="list-inline pt-2" >
+                                <li class="list-inline-item">
+                                    <h6>Category :</h6>
+                                </li>
+                                <li class="list-inline-item">
+                                    <p>{{product.category}}</p>
+                                </li>
+                            </ul>
+
+                            <h6>Product Info :</h6><hr>
+                            <ul class="list-unstyled ps-5 pb-3" style="list-style-type: disc;">
+                                <li><span class="fw-bolder">Language : </span>{{product.book_language}}</li>
+                                <li><span class="fw-bolder">Length : </span>{{product.book_page}}</li>
+                                <li><span class="fw-bolder">Quantity : </span>1</li>
+                                <li><span class="fw-bolder">Publication : </span>{{product.publisher_name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Close Content -->
+
+{% endblock body %}
+
+{% block script %}
+
+    <script> 
+
+        $('.minus1').click(function(){
+            var x = {{product.id}};
+            if(cart['pr' + x] != undefined){
+                cart['pr' + x][0] = cart['pr' + x][0] - 1;
+                cart['pr' + x][0] = Math.max(0, cart['pr' + x][0]);
+            }
+            else{
+                qty = 0;
+                img = document.getElementById('imgpr' + x).innerHTML;
+                price = document.getElementById('pricepr' + x).innerHTML;
+                author = document.getElementById('authorpr' + x).innerHTML;
+                name = document.getElementById('namepr'+x).innerHTML;
+                cart['pr' + x] = [qty, name, img, author, price];
+            }
+            document.getElementById('var-value').innerHTML = cart['pr' + x][0];
+            console.log(cart);
+        });
+
+        $('.plus1').click(function(){
+            var x = {{product.id}};
+            if(cart['pr' + x] != undefined){
+                cart['pr' + x][0] = cart['pr' + x][0] + 1;
+            }
+            else{
+                qty = 2;
+                img = document.getElementById('imgpr' + x).innerHTML;
+                price = document.getElementById('pricepr' + x).innerHTML;
+                author = document.getElementById('authorpr' + x).innerHTML;
+                name = document.getElementById('namepr'+x).innerHTML;
+                cart['pr' + x] = [qty, name, img, author, price];
+            }
+            document.getElementById('var-value').innerHTML = cart['pr' + x][0];
+            console.log(cart['pr' + x][0]);
+        });
+
+        function updateCart(cart){
+            localStorage.setItem('cart', JSON.stringify(cart));
+            var x = {{product.id}};
+            if(cart['pr' + x] != undefined){
+                document.getElementById('var-value').innerHTML = cart['pr' + x][0];
+            }
+            else{
+                document.getElementById('var-value').innerHTML = 1;
+            }
+
+            var sum = 0;
+            for(var item in cart){
+                sum = sum + cart[item][0];
+            }
+            document.getElementById('cart').innerHTML = sum;
+        }
+    </script>
+
+{% endblock script %}

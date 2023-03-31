@@ -1,0 +1,81 @@
+{% extends 'basic.html' %}
+
+{% block title %}About Us{% endblock title %}
+
+{% block body %}
+{% load static %}
+    <!-- Start Banner -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row align-items-center py-5">
+                <div class="col-md-7 text-black">
+                    <h1>About Us</h1><br>
+                    <p>
+                        BookNook is an online bookstore that caters to book lovers around the world.At BookNook, we understand that reading is not just a hobby, it's a way of life.Whether you're an avid reader or a casual one, our extensive collection of books has something for everyone.<br><br>
+                        In summary, Booknook is the ultimate destination for book lovers looking for a wide range of high-quality books at competitive prices. With our commitment to customer satisfaction, we strive to provide an exceptional online shopping experience to all our customers.
+                    </p>
+                </div>
+                <div class="col-md-5">
+                    <img src="{% static 'assets/img/about-hero.svg' %}" alt="About Hero">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Close Banner -->
+
+    <!-- Start Section -->
+    <section class="container py-5">
+        <div class="row text-center pt-5 pb-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Our Services</h1>
+                <p>
+                    Our team of dedicated professionals is committed to providing exceptional customer service.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-secondary text-center"><i class="fa fa-truck fa-lg"></i></div>
+                    <h2 class="h5 mt-4 text-center">Delivery Services</h2>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-secondary text-center"><i class="fas fa-exchange-alt"></i></div>
+                    <h2 class="h5 mt-4 text-center">Shipping & Return</h2>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-secondary text-center "><i class="fa fa-percent"></i></div>
+                    <h2 class="h5 mt-4 text-center">Promotion</h2>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3 pb-5">
+                <div class="h-100 py-5 services-icon-wap shadow">
+                    <div class="h1 text-secondary text-center"><i class="fa fa-user"></i></div>
+                    <h2 class="h5 mt-4 text-center">24 Hours Service</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Section -->
+
+    {% block script %}
+    <script>
+        function updateCart(cart){
+            var sum = 0;
+            for(var item in cart){
+                sum = sum + cart[item][0];
+            }
+            document.getElementById('cart').innerHTML = sum;
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+    </script>
+    {% endblock script %}
+{% endblock body %}
