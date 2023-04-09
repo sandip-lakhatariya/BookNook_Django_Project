@@ -4,7 +4,7 @@ from math import ceil
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-import razorpay
+# import razorpay
 from myProject.settings import RAJORPAY_API_KEY, RAJORPAY_API_SECRET_KEY
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
@@ -20,65 +20,79 @@ def productview(request, myid):
      product = Book.objects.filter(id=myid)
      return render(request, 'productview.html', {'product':product[0]})
 
+def searchMatch(query, item):
+    if query in item.book_name.lower() or query in item.author_name.lower() or query in item.category.lower():
+        return True
+    else:
+        return False
+
 def shopview(request, data=None):
-    if data == None:
+    if data == None and request.method == "GET":
+        query = request.GET.get('search')
+        prodtemp = Book.objects.all()
+        products = [item for item in prodtemp if searchMatch(query, item)]
+        if len(products) != 0:
+            book_type = "Search Result"
+        else:
+            book_type = "No Result Found"
+    elif data == "Shop_view":
         products = Book.objects.all()
         book_type = "All Books"
-    if data == "Gujarati" or data == "Hindi" or data == "English":
+    elif data == "Gujarati" or data == "Hindi" or data == "English":
         products = Book.objects.filter(book_language = data)
         book_type = data + " Books"
-    if data == "Novel" or data == "Biography" or data == "Self-Help":
+    elif data == "Novel" or data == "Biography" or data == "Self-Help":
         products = Book.objects.filter(category = data)
         book_type = data + " Books"
     if data == "BA":
         products = Book.objects.filter(category = "Business & Analysis")
         book_type = "Business & Analysis Books"
-    if data == "SC":
+    elif data == "SC":
         products = Book.objects.filter(category = "School/College")
         book_type = "School/College Books"
-    if data == "G_Novel":
+    elif data == "G_Novel":
         products = Book.objects.filter(book_language = "Gujarati").filter(category = 'Novel')
         book_type = "Gujarati Novel"
-    if data == "G_Biography":
+    elif data == "G_Biography":
         products = Book.objects.filter(book_language = "Gujarati").filter(category = "Biography")
         book_type = "Gujarati Biography"
-    if data == "G_BA":
+    elif data == "G_BA":
         products = Book.objects.filter(book_language = "Gujarati").filter(category = "Business & Analysis")
         book_type = "Gujarati Business & Analysis Books"
-    if data == "G_SF":
+    elif data == "G_SF":
         products = Book.objects.filter(book_language = "Gujarati").filter(category = "Self-Help")
         book_type = "Gujarati Self-Help Books"
-    if data == "G_SC":
+    elif data == "G_SC":
         products = Book.objects.filter(book_language = "Gujarati").filter(category = "School/College")
         book_type = "Gujarati School/College Books"
-    if data == "H_Novel":
+    elif data == "H_Novel":
         products = Book.objects.filter(book_language = "Hindi").filter(category = "Novel")
         book_type = "Hindi Novel"
-    if data == "H_Biography":
+    elif data == "H_Biography":
         products = Book.objects.filter(book_language = "Hindi").filter(category = "Biography")
         book_type = "Hindi Biography"
-    if data == "H_BA":
+    elif data == "H_BA":
         products = Book.objects.filter(book_language = "Hindi").filter(category = "Business & Analysis")
         book_type = "Hindi Business & Analysis Books"
-    if data == "H_SF":
+    elif data == "H_SF":
         products = Book.objects.filter(book_language = "Hindi").filter(category = "Self-Help")
         book_type = "Hindi Self-Help Books"
-    if data == "H_SC":
+    elif data == "H_SC":
         book_type = "Hindi School/College Books"
         products = Book.objects.filter(book_language = "Hindi").filter(category = "Scholl/College")
-    if data == "E_Novel":
+    elif data == "E_Novel":
         products = Book.objects.filter(book_language = "English").filter(category = "Novel")
         book_type = "English Novel"
-    if data == "E_Biography":
+    elif data == "E_Biography":
         products = Book.objects.filter(book_language = "English").filter(category = "Biography")
         book_type = "English Biography"
-    if data == "E_BA":
+    elif data == "E_BA":
         products = Book.objects.filter(book_language = "English").filter(category = "Business & Analysis")
         book_type = "English Business & Analysis Books"
-    if data == "E_SF":
+    elif data == "E_SF":
         products = Book.objects.filter(book_language = "English").filter(category = "Self-Help")
         book_type = "English Self-Help Books"
-    if data == "E_SC":
+    elif data == "E_SC":
         products = Book.objects.filter(book_language = "English").filter(category = "Scholl/College")
         book_type = "English School/College Books"
 
@@ -150,7 +164,7 @@ def aboutUs(request):
 def shoppingCart(request):
     return render(request, 'add_cart.html')
 
-client = razorpay.Client(auth=(RAJORPAY_API_KEY, RAJORPAY_API_SECRET_KEY))
+# client = razorpay.Client(auth=(RAJORPAY_API_KEY, RAJORPAY_API_SECRET_KEY))
 def shipping(request):
     if request.method == "POST":
         order_item = request.POST['order_item']
@@ -168,7 +182,7 @@ def shipping(request):
         add = address + ", " + city + " - " + zip_code
         params = {'name':first_name, 'address':add, 'total_price':total_price}
 
-        payment = client.order.create(dict(amount=50000, currency= 'INR', payment_capture= 1))
+#         payment = client.order.create(dict(amount=50000, currency= 'INR', payment_capture= 1))
         return render(request,'payment_test.html', params)
     return render(request, 'shipping.html')
 
@@ -180,7 +194,6 @@ def payment_test(request):
 
 @csrf_exempt
 def success(request):
-    messages.success(request, "Thank You For Shopping. Keep Shopping!")
-    # thank = True
-    return redirect('Home')
-    # return render(request, 'test.html' , {'thank':thank})
+    # messages.success(request, "Thank You For Shopping. Keep Shopping!")
+    thank = True
+    return render(request, 'success.html' , {'thank':thank})
